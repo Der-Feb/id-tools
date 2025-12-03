@@ -1,0 +1,22 @@
+{
+  "name": "id-tools",
+  "version": "1.0.4",
+  "description": "A comprehensive library for generating and validating unique IDs in JavaScript/TypeScript.",
+  "main": "index.cjs",
+  "type": "module",
+  "install": "npm install id-tools",
+  "types": "index.d.ts",
+  "author": "Eric Derick <bugingoderer@gmail.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "uuid",
+    "ulid",
+    "mongo_id",
+    "random",
+    "generator",
+    "ids"
+  ],
+  "license": "MIT"
+}
