@@ -22,10 +22,10 @@ npm install id-tools
 ### Random Numbers
 
 ```typescript
-import { randomNumber } from 'id-tools';
+import { randomInteger } from 'id-tools';
 
 // Generate a random number between 1 and 100
-const num = randomNumber(1, 100);
+const num = randomInteger(1, 100);
 ```
 
 ### Random Strings and IDs
@@ -126,7 +126,7 @@ const newObjectId = uuidToMongoId(uuid);
 
 ### Random Generation
 
-- `randomNumber(min: number, max: number): number`
+- `randomInteger(min: number, max: number): number`
   - Generate a random integer between min and max (inclusive)
 
 - `randomLetter(upper: boolean = false): string`

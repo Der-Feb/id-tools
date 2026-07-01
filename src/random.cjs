@@ -38,17 +38,17 @@ function idByFormat(format, options = { upper: false, numbers: true, specials: f
     return result;
 }
 
-function randomNumber(min = 0, max) {
+function randomInteger(min = 0, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function randomLetter(upper = false) {
-	const charCode = randomNumber(0, 25) + (upper ? 65 : 97);
+	const charCode = randomInteger(0, 25) + (upper ? 65 : 97);
 	return String.fromCharCode(charCode);
 }
 
 function randomSpecialChar() {
-	return format.s[randomNumber(0, format.s.length - 1)];
+	return format.s[randomInteger(0, format.s.length - 1)];
 }
 
 function randomBoolean() {
@@ -122,7 +122,7 @@ function randomDate(start, end) {
 }
 
 function randomRGB() {
-	return `rgb(${randomNumber(0,255)},${randomNumber(0,255)},${randomNumber(0,255)})`;
+	return `rgb(${randomInteger(0,255)},${randomInteger(0,255)},${randomInteger(0,255)})`;
 }
 
 function randomHexColor() {
@@ -147,7 +147,7 @@ function randomDigit() {
 module.exports = {
 	format,
 	idByFormat,
-	randomNumber,
+	randomInteger,
 	randomLetter,
 	randomSpecialChar,
 	randomBoolean,

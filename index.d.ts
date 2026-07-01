@@ -5,7 +5,7 @@
  * @param max Maximum value
  * @returns Random integer between min and max
  */
-export declare const randomNumber: (min: number, max: number) => number;
+export declare const randomInteger: (min: number, max: number) => number;
 
 /**
  * Format object containing character sets for different types of characters
