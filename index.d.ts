@@ -36,7 +36,7 @@ export declare const randomLetter: (upper?: boolean) => string;
 
 /**
  * Generate a random special character
- * @returns Random character from "!@#$%^&*()_+[]{}|;:',.<>?/"
+ * @returns Random character from "!@#$%^&*()_+[]{}|;':"
  */
 export declare const randomSpecialChar: () => string;
 
@@ -119,6 +119,11 @@ export declare const randomRGB: () => string;
  */
 export declare const randomHexColor: () => string;
 
+/**
+ * Generate a random digit (0-9)
+ * @returns Random digit
+ */
+export declare const randomDigit: () => number;
 
 
 // ---------------------------------------------uuid----------------------------------------------
@@ -135,7 +140,7 @@ export declare const randomHexColor: () => string;
  * Generates a UUID string.
  * @returns A UUID string.
  */
-export declare const generateUuid: () => string;
+export declare const generateUuid: (version?: number) => string;
 
 
 interface IsUuidOptions {
@@ -189,8 +194,8 @@ export declare const generateUlid: (time?: number) => string;
  * @returns An object containing the timestamp and random part.
  */
 export declare const decodeUlid: (ulid: string) => {
-  timestamp: number;
-  randomPart: string;
+	timestamp: number;
+	random: string;
 };
 
 /**
@@ -199,6 +204,11 @@ export declare const decodeUlid: (ulid: string) => {
  * @returns True if the string is a valid ULID, false otherwise.
  */
 export declare const isValidUlid: (ulid: string) => boolean;
+
+/**
+ * Alias for isValidUlid
+ */
+export declare const isUlid: (ulid: string) => boolean;
 
 /**
  * Generates a monotonically increasing ULID that maintains sort order.
@@ -245,6 +255,31 @@ export declare const compareUlids: (u1: string, u2: string) => number;
  */
 export declare const formatUlid: (ulid: string, options?: FormatUlidOptions) => string;
 
+/**
+ * Convert a ULID to a UUID
+ * @param ulid - The ULID string to convert
+ * @returns UUID string
+ */
+export declare const ulidToUuid: (ulid: string) => string;
+
+/**
+ * Convert a UUID to a ULID
+ * @param uuid - The UUID string to convert
+ * @returns ULID string
+ */
+export declare const uuidToUlid: (uuid: string) => string;
+
+/**
+ * Get the timestamp from a ULID
+ * @param ulid - The ULID string
+ * @returns Timestamp in milliseconds
+ */
+export declare const ulidTime: (ulid: string) => number;
+
+/**
+ * Alias for ulidTime
+ */
+export declare const ulidTimestamp: (ulid: string) => number;
 
 
 // ---------------------------------------------mongoid----------------------------------------------
@@ -261,6 +296,10 @@ export declare const formatUlid: (ulid: string, options?: FormatUlidOptions) => 
 */
 export declare const generateMongoID: () => string;
 
+/**
+ * Alias for generateMongoID
+ */
+export declare const generateMongoId: () => string;
 
 /**
  * Check if a string is a valid MongoDB ObjectID
@@ -270,61 +309,87 @@ export declare const generateMongoID: () => string;
 */
 export declare const isMongoID: (id: string, options?: IsMongoIDOptions) => boolean;
 
+/**
+ * Alias for isMongoID
+ */
+export declare const isMongoId: (id: string, options?: IsMongoIDOptions) => boolean;
+
+/**
+ * Get the timestamp from a MongoDB ObjectId in milliseconds
+ * @param id - MongoDB ObjectId string
+ * @returns Timestamp in milliseconds
+ */
+export declare const mongoIdTimestamp: (id: string) => number;
+
+/**
+ * Convert a MongoDB ObjectId to a UUID
+ * @param id - MongoDB ObjectId string
+ * @returns UUID string
+ */
+export declare const mongoIdToUuid: (id: string) => string;
+
+/**
+ * Convert a UUID to a MongoDB ObjectId
+ * @param uuid - UUID string
+ * @returns MongoDB ObjectId string
+ */
+export declare const uuidToMongoId: (uuid: string) => string;
+
 
 // ---------------------------------------------prefixIds----------------------------------------------
 /**
- * generating a random prefix Id
+ * Generating a random prefix ID
  * @param prefix - The string which will be in front of id
- * @param length - length of random part, @default 20
+ * @param length - Length of random part, @default 20
  * @param delimiter - A sign between prefix and random suffix
  * @param options - upper for uppercase only, numbers for if the random suffix will contain
-   numbers, specials for special characters.
+ *   numbers, specials for special characters.
  */
 export declare const generatePrefixId: (
-	prefix: string, 
-	length: number, 
-	delimiter: string,
-	options: { upper: boolean, numbers: boolean, specials: boolean }
+	prefix: string,
+	length?: number,
+	delimiter?: string,
+	options?: { upper?: boolean; numbers?: boolean; specials?: boolean }
 ) => string;
 
 
-// ---------------------------------------------mongoId-------------------------------------------------
+// ---------------------------------------------types----------------------------------------------
 export type IdByFormatOptions = {
-  /** Use uppercase letters */
-  upper?: boolean;
-  /** Include numbers */
-  numbers?: boolean;
-  /** Include special characters */
-  specials?: boolean;
-  /** Ensure all characters in ID are unique */
-  unique?: boolean;
-}
+	/** Use uppercase letters */
+	upper?: boolean;
+	/** Include numbers */
+	numbers?: boolean;
+	/** Include special characters */
+	specials?: boolean;
+	/** Ensure all characters in ID are unique */
+	unique?: boolean;
+};
 
 export type RandomStringOptions = {
-  /** Whether letters should be uppercase, 50% chance letter */
-  upper?: boolean;
-  /** Include numbers in the string, 25% chance (if allowed) */
-  numbers?: boolean;
-  /** Include special characters in the string, fallback to letter */
-  specials?: boolean;
-}
+	/** Whether letters should be uppercase */
+	upper?: boolean;
+	/** Include numbers in the string */
+	numbers?: boolean;
+	/** Include special characters in the string */
+	specials?: boolean;
+};
 
 export type FormatUlidOptions = {
-  /** Whether to format as uppercase (default: true) */
-  upper?: boolean;
-}
+	/** Whether to format as uppercase (default: true) */
+	upper?: boolean;
+};
 
 export type IsMongoIDOptions = {
-  /** Allow uppercase hex letters in the ID */
-  upper?: boolean;
-  /** Validate that the timestamp (first 8 chars) is within a plausible range */
-  checkTimestamp?: boolean;
-  /** Maximum allowed timestamp in seconds since epoch (default: now + 1 day) */
-  maxTimestamp?: number;
-  /** Minimum allowed timestamp in seconds since epoch (default: 0 / Jan 1, 1970) */
-  minTimestamp?: number;
-  /** Strict mode: only accept 24-character IDs (otherwise allow 12-byte buffers) */
-  strictLength?: boolean;
-  /** Check that counter/random part is not all zeros (optional) */
-  checkRandomPart?: boolean;
-}
+	/** Allow uppercase hex letters in the ID */
+	upper?: boolean;
+	/** Validate that the timestamp (first 8 chars) is within a plausible range */
+	checkTimestamp?: boolean;
+	/** Maximum allowed timestamp in seconds since epoch (default: now + 1 day) */
+	maxTimestamp?: number;
+	/** Minimum allowed timestamp in seconds since epoch (default: 0 / Jan 1, 1970) */
+	minTimestamp?: number;
+	/** Strict mode: only accept 24-character IDs (otherwise allow 12-byte buffers) */
+	strictLength?: boolean;
+	/** Check that counter/random part is not all zeros (optional) */
+	checkRandomPart?: boolean;
+};
