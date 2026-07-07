@@ -1,4 +1,4 @@
-const utils = require('../index.cjs');
+const utils = require('./random.cjs');
 
 function generatePrefixId(
     prefix, 
@@ -14,8 +14,6 @@ function generatePrefixId(
     return `${prefix}${delimiter}${randString}`;
 }
 
-console.log(generatePrefixId('trader', 20));
-
-function isValidPrefixId(id) {
-
+module.exports = {
+    generatePrefixId
 }
