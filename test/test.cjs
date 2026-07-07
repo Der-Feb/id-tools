@@ -43,3 +43,23 @@ var customNanoId = test.generateNanoid(15, 'abcdefghijklmnopqrstuvwxyz');
 console.log("Generated custom Nano ID", customNanoId);
 console.log("Is valid custom Nano ID?", test.isNanoid(customNanoId, 'abcdefghijklmnopqrstuvwxyz'));
 
+// Test UUID versions
+var uuidV1 = test.generateUuidV1();
+console.log("Generated UUID v1", uuidV1);
+console.log("Is valid UUID v1?", test.isValidUuid(uuidV1, { checkVersion: true, version: 1 }));
+
+var uuidV4 = test.generateUuidV4();
+console.log("Generated UUID v4", uuidV4);
+console.log("Is valid UUID v4?", test.isValidUuid(uuidV4, { checkVersion: true, version: 4 }));
+
+// Test UUID v3 and v5 (async)
+(async function() {
+    const uuidV3 = await test.generateUuidV3('hello world', test.NAMESPACES.DNS);
+    console.log("Generated UUID v3", uuidV3);
+    console.log("Is valid UUID v3?", test.isValidUuid(uuidV3, { checkVersion: true, version: 3 }));
+
+    const uuidV5 = await test.generateUuidV5('hello world', test.NAMESPACES.DNS);
+    console.log("Generated UUID v5", uuidV5);
+    console.log("Is valid UUID v5?", test.isValidUuid(uuidV5, { checkVersion: true, version: 5 }));
+})();
+

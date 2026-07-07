@@ -153,25 +153,65 @@ export declare const isNanoid: (id: string, alphabet?: string) => boolean;
  */
 
 /**
- * Generates a UUID string.
- * @returns A UUID string.
+ * UUID namespace constants
  */
-export declare const generateUuid: (version?: number) => string;
+export declare const NAMESPACES: {
+    DNS: string;
+    URL: string;
+    OID: string;
+    X500: string;
+};
 
+/**
+ * Generates UUID v1 (time-based)
+ * @returns UUID v1 string
+ */
+export declare const generateUuidV1: () => string;
+
+/**
+ * Generates UUID v3 (name-based using MD5)
+ * @param name - Name to hash
+ * @param namespace - Namespace UUID
+ * @returns Promise resolving to UUID v3 string
+ */
+export declare const generateUuidV3: (name: string | Uint8Array, namespace: string) => Promise<string>;
+
+/**
+ * Generates UUID v4 (random)
+ * @returns UUID v4 string
+ */
+export declare const generateUuidV4: () => string;
+
+/**
+ * Generates UUID v5 (name-based using SHA-1)
+ * @param name - Name to hash
+ * @param namespace - Namespace UUID
+ * @returns Promise resolving to UUID v5 string
+ */
+export declare const generateUuidV5: (name: string | Uint8Array, namespace: string) => Promise<string>;
+
+/**
+ * Generates a UUID string.
+ * @param version - UUID version (1, 3, 4, or 5)
+ * @param options - Options for v3/v5 (name and namespace)
+ * @returns UUID string (or Promise for v3/v5)
+ */
+export declare const generateUuid: (
+    version?: number,
+    options?: { name?: string | Uint8Array; namespace?: string }
+) => string | Promise<string>;
 
 interface IsUuidOptions {
 	upper?: boolean;
+	checkVersion?: boolean;
 	version?: number;
 	strictLength?: boolean;
-	timestamp?: boolean;
-	minTimestamp?: number;
-	maxTimestamp?: number;
-	checkVersion?: boolean;
 }
 
 /**
  * Verify if string is UUID form
- * @params id - The string id to verify
+ * @param id - The string id to verify
+ * @param options - Validation options
  * @returns boolean
  */
 export declare const isValidUuid: (id: string, options?: IsUuidOptions) => boolean;
