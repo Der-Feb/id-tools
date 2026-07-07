@@ -7,6 +7,12 @@ const format = {
 	b64: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 }
 
+function swap(a, b) {
+	let temp = a;
+	a = b;
+	b = temp;
+}
+
 function idByFormat(format, options = { upper: false, numbers: true, specials: false, unique: false }) {
     let result = '';
     let usedChars = new Set();
@@ -39,7 +45,8 @@ function idByFormat(format, options = { upper: false, numbers: true, specials: f
 }
 
 function randomInteger(min = 0, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+	if(max < min) swap(min, max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function randomLetter(upper = false) {
@@ -131,7 +138,6 @@ function randomHexColor() {
 
 
 // Fisher-Yates shuffle algorithm
-// you can shuffle the string by shuffleArray(string.split("")).join("")
 function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
@@ -139,6 +145,10 @@ function shuffleArray(array) {
 	}
 	return array;
 };
+
+function shuffleString(word) {
+	return shuffleArray(word.split("")).join("");
+}
 
 function randomDigit() {
 	return Math.floor(Math.random() * 10);
