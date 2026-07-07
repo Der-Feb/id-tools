@@ -35,3 +35,11 @@ console.log("MongoDB ObjectId timestamp", test.mongoIdTimestamp(mongoId));
 var prefixId = test.generatePrefixId('test', 10, '-', { upper: true, numbers: true, specials: false });
 console.log("Generated Prefix ID", prefixId);
 
+var nanoId = test.generateNanoid();
+console.log("Generated Nano ID", nanoId);
+console.log("Is valid Nano ID?", test.isNanoid(nanoId));
+
+var customNanoId = test.generateNanoid(15, 'abcdefghijklmnopqrstuvwxyz');
+console.log("Generated custom Nano ID", customNanoId);
+console.log("Is valid custom Nano ID?", test.isNanoid(customNanoId, 'abcdefghijklmnopqrstuvwxyz'));
+

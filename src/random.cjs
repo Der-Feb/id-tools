@@ -4,8 +4,11 @@ const format = {
 	a: 'abcdefghijklmnopqrstuvwxyz',
 	A: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	b32: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
-	b64: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	b64: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+	nanoid: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'
 }
+
+const NANOID_DEFAULT_SIZE = 21;
 
 function swap(a, b) {
 	let temp = a;
@@ -154,6 +157,48 @@ function randomDigit() {
 	return Math.floor(Math.random() * 10);
 }
 
+function generateNanoid(size = NANOID_DEFAULT_SIZE, alphabet = format.nanoid) {
+    let id = '';
+    const bytes = cryptoRandomBytes(size);
+    
+    for (let i = 0; i < size; i++) {
+        id += alphabet[bytes[i] % alphabet.length];
+    }
+    
+    return id;
+}
+
+function isNanoid(id, alphabet = format.nanoid) {
+    if (typeof id !== 'string') return false;
+    const regex = new RegExp(`^[${escapeRegExp(alphabet)}]+$`);
+    return regex.test(id);
+}
+
+function cryptoRandomBytes(size) {
+    // Check for Node.js crypto
+    try {
+        const crypto = require('crypto');
+        return crypto.randomBytes(size);
+    } catch (e) {
+        // Check for browser crypto
+        if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+            const bytes = new Uint8Array(size);
+            crypto.getRandomValues(bytes);
+            return bytes;
+        }
+        // Fallback to Math.random
+        const bytes = new Uint8Array(size);
+        for (let i = 0; i < size; i++) {
+            bytes[i] = Math.floor(Math.random() * 256);
+        }
+        return bytes;
+    }
+}
+
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 module.exports = {
 	format,
 	idByFormat,
@@ -172,4 +217,7 @@ module.exports = {
 	randomDigit,
 	randomHexColor,
 	shuffleArray,
+	shuffleString,
+	generateNanoid,
+	isNanoid
 }

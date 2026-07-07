@@ -125,6 +125,22 @@ export declare const randomHexColor: () => string;
  */
 export declare const randomDigit: () => number;
 
+/**
+ * Generate a Nano ID
+ * @param size - Length of the ID (default: 21)
+ * @param alphabet - Custom alphabet to use
+ * @returns Generated Nano ID
+ */
+export declare const generateNanoid: (size?: number, alphabet?: string) => string;
+
+/**
+ * Check if a string is a valid Nano ID
+ * @param id - ID to validate
+ * @param alphabet - Alphabet the ID should be using
+ * @returns True if valid, false otherwise
+ */
+export declare const isNanoid: (id: string, alphabet?: string) => boolean;
+
 
 // ---------------------------------------------uuid----------------------------------------------
 /**
