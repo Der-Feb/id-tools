@@ -82,6 +82,61 @@ function formatUlid(ulid, { upper = true } = {}) {
 	return upper ? ulid.toUpperCase() : ulid.toLowerCase();
 }
 
+// ULID <-> UUID conversion
+function ulidToBytes(ulid) {
+	if (!isValidUlid(ulid)) throw new Error("Invalid ULID");
+	let bytes = new Uint8Array(16);
+	let val = 0n;
+	for (let i = 0; i < 26; i++) {
+		val = (val << 5n) | BigInt(crockfordBase32.indexOf(ulid.toUpperCase()[i]));
+	}
+	for (let i = 15; i >= 0; i--) {
+		bytes[i] = Number(val & 0xffn);
+		val = val >> 8n;
+	}
+	return bytes;
+}
+
+function bytesToUuid(bytes) {
+	if (bytes.length !== 16) throw new Error("Invalid bytes length");
+	const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+	return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function uuidToBytes(uuid) {
+	const hex = uuid.replace(/-/g, '');
+	if (hex.length !== 32) throw new Error("Invalid UUID");
+	let bytes = new Uint8Array(16);
+	for (let i = 0; i < 16; i++) {
+		bytes[i] = parseInt(hex.slice(i * 2, (i + 1) * 2), 16);
+	}
+	return bytes;
+}
+
+function bytesToUlid(bytes) {
+	if (bytes.length !== 16) throw new Error("Invalid bytes length");
+	let val = 0n;
+	for (let i = 0; i < 16; i++) {
+		val = (val << 8n) | BigInt(bytes[i]);
+	}
+	let ulid = '';
+	for (let i = 0; i < 26; i++) {
+		ulid = crockfordBase32[Number(val & 0x1fn)] + ulid;
+		val = val >> 5n;
+	}
+	return ulid;
+}
+
+function ulidToUuid(ulid) {
+	const bytes = ulidToBytes(ulid);
+	return bytesToUuid(bytes);
+}
+
+function uuidToUlid(uuid) {
+	const bytes = uuidToBytes(uuid);
+	return bytesToUlid(bytes);
+}
+
 module.exports = {
 	crockfordBase32,
 	encodeTime,
@@ -91,5 +146,7 @@ module.exports = {
 	generateMonotonicUlid,
 	isValidUlid,
 	compareUlids,
-	formatUlid
+	formatUlid,
+	ulidToUuid,
+	uuidToUlid
 };
