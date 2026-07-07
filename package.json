@@ -3,13 +3,16 @@
   "version": "1.1.0",
   "description": "A comprehensive library for generating and validating unique IDs in JavaScript/TypeScript.",
   "main": "index.cjs",
-  "type": "module",
-  "install": "npm install id-tools",
   "types": "index.d.ts",
   "author": "Eric Derick <bugingoderer002@gmail.com>",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "src/",
+    "index.cjs",
+    "index.d.ts"
+  ],
   "keywords": [
     "uuid",
     "ulid",
@@ -19,5 +22,13 @@
     "nanoid",
     "ids"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Der-Feb/id-tools.git"
+  },
+  "homepage": "https://github.com/Der-Feb/id-tools",
+  "bugs": {
+    "url": "https://github.com/Der-Feb/id-tools/issues"
+  }
 }
