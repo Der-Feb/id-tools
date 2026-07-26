@@ -90,14 +90,34 @@ export declare const randomBase64: (length: number) => string;
  */
 export declare const randomFloat: (min: number, max: number) => number;
 
+
+export type shuffleArrayOptions = {
+	times: boolean
+}
+
 /**
  * Shuffle the elements of an array in place using Fisher–Yates algorithm
  * @param array The array to shuffle
+ * @param options The object of type shuffleArrayOptions
  * @returns The same array with elements shuffled
  * @example
  * shuffleArray([1, 2, 3, 4]) // e.g., [3, 1, 4, 2]
  */
-export declare const shuffleArray: <T>(array: T[]) => T[];
+export declare const shuffleArray: <T>(
+	array: T[], 
+	options: shuffleArrayOptions
+) => T[];
+
+/**
+ * Shuffle the string
+ * @param word THe string we are going to shuffle
+ * @param options THe object of type shuffleArrayOptions
+ * @returns The shuffled string with same number of characters
+ */
+export declare const shuffleString: (
+	word: string,
+	options: shuffleArrayOptions
+) => string
 
 /**
  * Generate a random date between start and end
@@ -191,10 +211,12 @@ export declare const generateUuidV4: () => string;
 export declare const generateUuidV5: (name: string | Uint8Array, namespace: string) => Promise<string>;
 
 /**
- * Generates a UUID string.
- * @param version - UUID version (1, 3, 4, or 5)
- * @param options - Options for v3/v5 (name and namespace)
- * @returns UUID string (or Promise for v3/v5)
+ * Generate UUID of specified version
+ * @param {number} [version=4] - UUID version (1, 3, 4, or 5)
+ * @param {object} [options={}] - Options for v3/v5
+ * @param {string|Uint8Array} [options.name] - Name for v3/v5
+ * @param {string} [options.namespace] - Namespace for v3/v5
+ * @returns {string|Promise<string>} UUID
  */
 export declare const generateUuid: (
     version?: number,
@@ -209,10 +231,14 @@ interface IsUuidOptions {
 }
 
 /**
- * Verify if string is UUID form
- * @param id - The string id to verify
- * @param options - Validation options
- * @returns boolean
+ * Check if a string is a valid UUID
+ * @param {string} id - ID to validate
+ * @param {object} [options={}] - Validation options
+ * @param {boolean} [options.upper=false] - Check if UUID is uppercase
+ * @param {boolean} [options.checkVersion=false] - Check specific version
+ * @param {number} [options.version=4] - Version to check if checkVersion is true
+ * @param {boolean} [options.strictLength=false] - Strictly check length
+ * @returns {boolean} True if valid, false otherwise
  */
 export declare const isValidUuid: (id: string, options?: IsUuidOptions) => boolean;
 
@@ -449,3 +475,61 @@ export type IsMongoIDOptions = {
 	/** Check that counter/random part is not all zeros (optional) */
 	checkRandomPart?: boolean;
 };
+
+/**
+ * Generate random bytes using crypto module (or fall back)
+ * @param {number} size - Number of bytes to generate
+ * @returns {Uint8Array|Buffer} Random bytes
+ */
+export function cryptoRandomBytes(size: number): 
+	Uint8Array<ArrayBufferLike> | Buffer<ArrayBufferLike>
+
+/**
+ * Generate a node ID (6 bytes) for UUID v1
+ * @returns {Uint8Array} Node ID
+ */
+export function getNodeId(): Uint8Array<ArrayBufferLike>
+
+/**
+ * Get or generate clock sequence (14 bits) for UUID v1
+ * @returns {number} clock sequence
+ */
+export function getClockSeq(): number
+
+/**
+ * Convert string to bytes (UTF-8)
+ * @param {string} str - String to convert
+ * @returns {Uint8Array} Bytes
+ */
+export function stringToBytes(str: string): Uint8Array<ArrayBufferLike>
+
+/**
+ * Convert UUID string to bytes
+ * @param {string} uuid - UUID string
+ * @returns {Uint8Array} Bytes
+ */
+export function uuidToBytes(uuid: any): Uint8Array<ArrayBuffer>
+
+/**
+ * Convert bytes to UUID string
+ * @param {Uint8Array} bytes - Bytes
+ * @returns {string} UUID string
+ */
+export function bytesToUuid(bytes: any): string
+
+/**
+ * Compute hash (MD5 for v3, SHA-1 for v5)
+ * @param {string} algorithm - Hash algorithm ('md5' or 'sha1')
+ * @param {Uint8Array} data - Data to hash
+ * @returns {Promise<Uint8Array>} Hash bytes
+ */
+export function computeHash(algorithm: any, data: any): Promise<Uint8Array<ArrayBuffer> | NonSharedBuffer>
+
+/**
+ * 
+ * @param id 
+ * @returns number
+ */
+export function mongoIdTimestamp(id: any): number
+
+

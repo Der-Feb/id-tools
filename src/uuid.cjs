@@ -12,11 +12,6 @@ const NAMESPACES = {
     X500: '6ba7b814-9dad-11d1-80b4-00c04fd430c8'
 };
 
-/**
- * Generate random bytes using crypto module (or fall back)
- * @param {number} size - Number of bytes to generate
- * @returns {Uint8Array|Buffer} Random bytes
- */
 function cryptoRandomBytes(size) {
     try {
         const crypto = require('crypto');
@@ -35,10 +30,6 @@ function cryptoRandomBytes(size) {
     }
 }
 
-/**
- * Generate a node ID (6 bytes) for UUID v1
- * @returns {Uint8Array} Node ID
- */
 function getNodeId() {
     if (!_nodeId) {
         _nodeId = new Uint8Array(6);
@@ -52,10 +43,6 @@ function getNodeId() {
     return _nodeId;
 }
 
-/**
- * Get or generate clock sequence (14 bits) for UUID v1
- * @returns {number} Clock sequence
- */
 function getClockSeq() {
     if (!_clockSeq) {
         const bytes = cryptoRandomBytes(2);
@@ -64,21 +51,11 @@ function getClockSeq() {
     return _clockSeq;
 }
 
-/**
- * Convert string to bytes (UTF-8)
- * @param {string} str - String to convert
- * @returns {Uint8Array} Bytes
- */
 function stringToBytes(str) {
     const encoder = new TextEncoder();
     return encoder.encode(str);
 }
 
-/**
- * Convert UUID string to bytes
- * @param {string} uuid - UUID string
- * @returns {Uint8Array} Bytes
- */
 function uuidToBytes(uuid) {
     const hex = uuid.replace(/-/g, '');
     const bytes = new Uint8Array(16);
@@ -88,22 +65,11 @@ function uuidToBytes(uuid) {
     return bytes;
 }
 
-/**
- * Convert bytes to UUID string
- * @param {Uint8Array} bytes - Bytes
- * @returns {string} UUID string
- */
 function bytesToUuid(bytes) {
     const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
     return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-/**
- * Compute hash (MD5 for v3, SHA-1 for v5)
- * @param {string} algorithm - Hash algorithm ('md5' or 'sha1')
- * @param {Uint8Array} data - Data to hash
- * @returns {Promise<Uint8Array>} Hash bytes
- */
 async function computeHash(algorithm, data) {
     try {
         // Try Node.js crypto
@@ -119,10 +85,6 @@ async function computeHash(algorithm, data) {
     }
 }
 
-/**
- * Generate UUID v1 (time-based)
- * @returns {string} UUID v1
- */
 function generateUuidV1() {
     const now = Date.now();
     let ns = _lastNs;
@@ -170,10 +132,6 @@ function generateUuidV1() {
     return bytesToUuid(bytes);
 }
 
-/**
- * Generate UUID v4 (random)
- * @returns {string} UUID v4
- */
 function generateUuidV4() {
     const bytes = cryptoRandomBytes(16);
     bytes[6] = (bytes[6] & 0x0f) | 0x40; // Version 4
@@ -181,12 +139,6 @@ function generateUuidV4() {
     return bytesToUuid(bytes);
 }
 
-/**
- * Generate UUID v3 (name-based using MD5)
- * @param {string|Uint8Array} name - Name to hash
- * @param {string} namespace - Namespace UUID
- * @returns {Promise<string>} UUID v3
- */
 async function generateUuidV3(name, namespace) {
     const namespaceBytes = uuidToBytes(namespace);
     const nameBytes = typeof name === 'string' ? stringToBytes(name) : name;
@@ -200,12 +152,6 @@ async function generateUuidV3(name, namespace) {
     return bytesToUuid(bytes);
 }
 
-/**
- * Generate UUID v5 (name-based using SHA-1)
- * @param {string|Uint8Array} name - Name to hash
- * @param {string} namespace - Namespace UUID
- * @returns {Promise<string>} UUID v5
- */
 async function generateUuidV5(name, namespace) {
     const namespaceBytes = uuidToBytes(namespace);
     const nameBytes = typeof name === 'string' ? stringToBytes(name) : name;
@@ -219,14 +165,7 @@ async function generateUuidV5(name, namespace) {
     return bytesToUuid(bytes);
 }
 
-/**
- * Generate UUID of specified version
- * @param {number} [version=4] - UUID version (1, 3, 4, or 5)
- * @param {object} [options={}] - Options for v3/v5
- * @param {string|Uint8Array} [options.name] - Name for v3/v5
- * @param {string} [options.namespace] - Namespace for v3/v5
- * @returns {string|Promise<string>} UUID
- */
+
 function generateUuid(version = 4, options = {}) {
     switch (version) {
         case 1:
@@ -248,16 +187,6 @@ function generateUuid(version = 4, options = {}) {
     }
 }
 
-/**
- * Check if a string is a valid UUID
- * @param {string} id - ID to validate
- * @param {object} [options={}] - Validation options
- * @param {boolean} [options.upper=false] - Check if UUID is uppercase
- * @param {boolean} [options.checkVersion=false] - Check specific version
- * @param {number} [options.version=4] - Version to check if checkVersion is true
- * @param {boolean} [options.strictLength=false] - Strictly check length
- * @returns {boolean} True if valid, false otherwise
- */
 function isValidUuid(id, options = { upper: false, checkVersion: false, version: 4, strictLength: false }) {
     const { upper, checkVersion, version, strictLength } = options;
     if (typeof id !== 'string') return false;
