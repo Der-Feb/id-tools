@@ -77,6 +77,11 @@ function uuidToMongoId(uuid) {
     return hex.slice(0, 24);
 }
 
+function mongoIdTimestamp(id) {
+    const tsHex = id.slice(0, 8);
+    return parseInt(tsHex, 16) * 1000;
+}
+
 module.exports = {
     generateMongoID,
     isMongoID,
