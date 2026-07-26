@@ -140,19 +140,6 @@ function randomHexColor() {
 }
 
 
-// Fisher-Yates shuffle algorithm
-function shuffleArray(array) {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
-	}
-	return array;
-};
-
-function shuffleString(word) {
-	return shuffleArray(word.split("")).join("");
-}
-
 function randomDigit() {
 	return Math.floor(Math.random() * 10);
 }
@@ -216,8 +203,6 @@ module.exports = {
 	randomRGB,
 	randomDigit,
 	randomHexColor,
-	shuffleArray,
-	shuffleString,
 	generateNanoid,
 	isNanoid
 }
